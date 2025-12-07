@@ -1,0 +1,112 @@
+<?php
+
+namespace App\Data;
+
+use App\Data\RegionData;
+use App\Data\CustomerData;
+use Spatie\LaravelData\Data;
+use App\Data\SalesPaymentData;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Number;
+use App\Data\SalesShippingData;
+use App\Data\SalesOrderItemData;
+use App\Models\SalesOrder;
+use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\Attributes\Computed;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+
+class SalesOrderData extends Data
+{
+    #[Computed]
+    public string $sub_total_formatted;
+    #[Computed]
+    public string $shipping_total_formatted;
+    #[Computed]
+    public string $total_formatted;
+    #[Computed]
+    public string $due_date_at_formatted;
+    #[Computed]
+    public string $created_at_formatted;
+
+    public function __construct(
+        public string $rtx_id,
+        public string $status,
+        public CustomerData $customer,
+        public string $address_line,
+
+        public RegionData $origin,
+        public RegionData $destination,
+
+        #[DataCollectionOf(SalesOrderItemData::class)]
+        public DataCollection $items,
+
+        public SalesShippingData $sales_shipping,
+        public SalesPaymentData $sales_payment,
+
+        public float $sub_total,
+        public float $shipping_cost,
+        public float $total,
+
+        public Carbon $due_date_at,
+        public Carbon $created_at,
+    ) {
+        $this->sub_total_formatted = Number::currency($sub_total);
+        $this->shipping_total_formatted = Number::currency($shipping_cost);
+        $this->total_formatted = Number::currency($total);
+
+        $this->due_date_at_formatted = $due_date_at->translatedFormat('d F Y, H:i');
+        $this->created_at_formatted = $created_at->translatedFormat('d F Y, H:i');
+    }
+
+    public static function fromModel(SalesOrder $sales_order): self
+    {
+        return new self(
+            $sales_order->trx_id,
+            $sales_order->status,
+            new CustomerData(
+                $sales_order->customer_full_name,
+                $sales_order->customer_email,
+                $sales_order->customer_no_telp,
+            ),
+            $sales_order->address_line,
+            new RegionData(
+                $sales_order->origin_code,
+                $sales_order->origin_province,
+                $sales_order->origin_city,
+                $sales_order->origin_district,
+                $sales_order->origin_sub_district,
+                $sales_order->origin_postal_code,
+            ),
+            new RegionData(
+                $sales_order->destination_code,
+                $sales_order->destination_province,
+                $sales_order->destination_city,
+                $sales_order->destination_district,
+                $sales_order->destination_sub_district,
+                $sales_order->destination_postal_code,
+            ),
+            SalesOrderItemData::collect($sales_order->items->toArray(), DataCollection::class),
+            new SalesShippingData(
+                $sales_order->shipping_driver,
+                $sales_order->shipping_receipt_number,
+                $sales_order->shipping_kurir,
+                $sales_order->shipping_service,
+                $sales_order->shipping_estimated_delivery,
+                $sales_order->shipping_cost,
+                $sales_order->shipping_weight
+            ),
+            new SalesPaymentData(
+                $sales_order->payment_driver,
+                $sales_order->payment_method,
+                $sales_order->payment_label,
+                $sales_order->payment_payload,
+                $sales_order->payment_pay_at
+            ),
+            $sales_order->sub_total,
+            $sales_order->shipping_total,
+            $sales_order->total,
+            $sales_order->due_date_at,
+            $sales_order->created_at
+        );
+    }
+}

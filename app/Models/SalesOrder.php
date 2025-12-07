@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Support\Carbon;
+use Spatie\ModelStates\HasStates;
+use Illuminate\Database\Eloquent\Model;
+use App\States\SalesOrder\SalesOrderState;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class SalesOrder extends Model
+{
+    use HasStates;
+    protected $with = ['items'];
+    protected $casts = [
+        'status'   => SalesOrderState::class,
+        'payment_payload' => 'json',
+        'due_date_at' => 'datetime',
+        'payment_pay_at' => 'datetime',
+    ];
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(SalesOrderItem::class);
+    }
+}
