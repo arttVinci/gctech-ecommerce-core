@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -37,6 +38,11 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->inlineLabel(),
+                Select::make('roles')
+                    ->multiple()
+                    ->required()
+                    ->preload()
+                    ->relationship('roles', 'name'),
                 Fieldset::make('Password')
                     ->schema([
                         TextInput::make('password')
@@ -61,6 +67,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('email'),
+                TextColumn::make('roles.name'),
                 TextColumn::make('created_at'),
             ])
             ->filters([
