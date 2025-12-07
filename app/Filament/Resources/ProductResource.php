@@ -84,7 +84,7 @@ class ProductResource extends Resource
             ->columns([
                 ImageColumn::make('cover')
                     ->label('Cover')
-                    ->getStateUsing(fn($record) => $record->getFirstMediaUrl('cover')) // ambil url dari media library
+                    ->getStateUsing(fn($record) => $record->getFirstMediaUrl('cover'))
                     ->square()
                     ->size(60),
 
