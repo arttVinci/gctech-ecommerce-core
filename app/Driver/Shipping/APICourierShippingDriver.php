@@ -8,10 +8,13 @@ use App\Data\CartData;
 use App\Data\RegionData;
 use App\Data\ShippingData;
 use App\Data\ShippingServiceData;
+use App\States\SalesOrder\Shipping;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelData\DataCollection;
 use App\Contract\ShippingServiceInterface;
-use App\States\SalesOrder\Shipping;
+use Illuminate\Http\Client\ConnectionException;
 
 class APICourierShippingDriver implements ShippingServiceInterface
 {
@@ -35,81 +38,81 @@ class APICourierShippingDriver implements ShippingServiceInterface
             [
                 'driver'  => $this->driver,
                 'code'    => 'jne-reguler',
-                'courier' => 'JNE',
+                'kurir' => 'JNE',
                 'service' => 'Regular',
             ],
             [
                 'driver'  => $this->driver,
-                'code'    => 'jne-express', // YES (Yakin Esok Sampai)
-                'courier' => 'JNE',
+                'code'    => 'jne-express',
+                'kurir' => 'JNE',
                 'service' => 'Express',
             ],
             [
                 'driver'  => $this->driver,
-                'code'    => 'jne-cargo', // JTR (Trucking)
-                'courier' => 'JNE',
+                'code'    => 'jne-cargo',
+                'kurir' => 'JNE',
                 'service' => 'Cargo',
             ],
 
-            // --- J&T Express ---
+            // // --- J&T Express ---
             [
                 'driver'  => $this->driver,
-                'code'    => 'jnt-reguler', // EZ
-                'courier' => 'J&T Express',
+                'code'    => 'jnt-reguler',
+                'kurir' => 'J&T Express',
                 'service' => 'Regular',
             ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'jnt-express',
-                'courier' => 'J&T Express',
-                'service' => 'Express',
-            ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'jnt-cargo', // ECO
-                'courier' => 'J&T Express',
-                'service' => 'Cargo',
-            ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'jnt-express',
+            //     'kurir' => 'J&T Express',
+            //     'service' => 'Express',
+            // ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'jnt-cargo',
+            //     'kurir' => 'J&T Express',
+            //     'service' => 'Cargo',
+            // ],
 
-            // --- Grab ---
-            [
-                'driver'  => $this->driver,
-                'code'    => 'grab-instant',
-                'courier' => 'Grab',
-                'service' => 'Instant',
-            ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'grab-same-day',
-                'courier' => 'Grab',
-                'service' => 'Same Day',
-            ],
+            // // --- Grab ---
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'grab-instant',
+            //     'kurir' => 'Grab',
+            //     'service' => 'Instant',
+            // ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'grab-same-day',
+            //     'kurir' => 'Grab',
+            //     'service' => 'Same Day',
+            // ],
 
-            // --- SiCepat ---
-            [
-                'driver'  => $this->driver,
-                'code'    => 'sicepat-reguler', // SIUNTUNG
-                'courier' => 'SiCepat',
-                'service' => 'Regular',
-            ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'sicepat-express', // BEST
-                'courier' => 'SiCepat',
-                'service' => 'Express',
-            ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'sicepat-cargo', // GOKIL
-                'courier' => 'SiCepat',
-                'service' => 'Cargo',
-            ],
-            [
-                'driver'  => $this->driver,
-                'code'    => 'sicepat-same-day', // SAMEDAY
-                'courier' => 'SiCepat',
-                'service' => 'Same Day',
-            ],
+            // // --- SiCepat ---
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'sicepat-reguler',
+            //     'kurir' => 'SiCepat',
+            //     'service' => 'Regular',
+            // ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'sicepat-express',
+            //     'kurir' => 'SiCepat',
+            //     'service' => 'Express',
+            // ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'sicepat-cargo',
+            //     'kurir' => 'SiCepat',
+            //     'service' => 'Cargo',
+            // ],
+            // [
+            //     'driver'  => $this->driver,
+            //     'code'    => 'sicepat-same-day',
+            //     'kurir' => 'SiCepat',
+            //     'service' => 'Same Day',
+            // ],
         ], DataCollection::class);
     }
 
@@ -119,29 +122,56 @@ class APICourierShippingDriver implements ShippingServiceInterface
         CartData $cart,
         ShippingServiceData $shipping_service
     ): ?ShippingData {
-        $response = Http::withBasicAuth(
-            config('shipping.api_kurir.username'),
-            config('shipping.api_kurir.password')
-        )->post('https://sandbox.apikurir.id/shipments/v1/open-api/rates', [
-            'isUseInsurance' => true,
-            'isPickup' => true,
-            'isCod' => false,
-            'weight' => $cart->total_weight,
-            'packagePrice' => $cart->total,
-            'origin' => [
-                'postalCode' => $origin->postal_code
-            ],
-            'destination' => [
-                'postalCode' => $destination->postal_code
-            ],
-            'logistics' => [$shipping_service->kurir],
-            'services' => [$shipping_service->service]
-        ]);
+        try {
+            Log::info("Memulai request API");
+
+            $response = Http::timeout(15)
+                ->withoutVerifying()
+                ->withBasicAuth(
+                    config('shipping.api_kurir.username'),
+                    config('shipping.api_kurir.password')
+                )->post('https://sandbox.apikurir.id/shipments/v1/open-api/rates', [
+                    "isUseInsurance" => true,
+                    "isPickup" => true,
+                    "isCod" => false,
+                    "dimensions" => [10, 10, 10],
+                    "weight" => $cart->total_weight,
+                    "packagePrice" => $cart->total,
+                    "origin" => [
+                        "postalCode" => "40115",
+                        "longitude" => 107.6108013,
+                        "latitude" => -6.908591400000001
+                    ],
+                    "destination" => [
+                        "postalCode" => "40115",
+                        "longitude" => 107.6108013,
+                        "latitude" => -6.908591400000001
+                    ],
+                    "logistics" => ["JNE", "SAP Logistic", "Ninja Xpress", "Lalamove", "Grab"],
+                    "services" => ["Regular", "Express", "Same Day", "Cargo", "Instant"]
+                ]);
+        } catch (ConnectionException $e) {
+            Log::error("API Timeout/Connection" . $e->getMessage());
+            return null;
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            Log::error("API Request Error" . $e->getMessage());
+
+            return null;
+        } catch (\Exception $e) {
+            Log::error("General Error" . $e->getMessage());
+
+            return null;
+        }
+
+        dd($response);
 
         $data = $response->collect('data')->flatten(1)->values()->first();
         if (empty($data)) {
+            Log::warning("Data kosong dari API untuk {$shipping_service->kurir}");
             return null;
         }
+
+        Log::info("Berhasil mendapatkan rate untuk {$shipping_service->kurir} - {$shipping_service->service}");
 
         $est = data_get($data, 'minDuration') . '-' . data_get($data, 'maxDuration') . ' ' . data_get($data, 'durationType');
         return new ShippingData(

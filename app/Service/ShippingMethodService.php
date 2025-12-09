@@ -21,15 +21,14 @@ class ShippingMethodService
     public function __construct()
     {
         $this->drivers = [
-            new OfflineShippingDriver(),
             new APICourierShippingDriver()
         ];
     }
 
-    public function getDriver(ShippingServiceData $shipping_service_data): OfflineShippingDriver
+    public function getDriver(ShippingServiceData $shipping_service_data): APICourierShippingDriver
     {
         return collect($this->drivers)
-            ->first(fn(OfflineShippingDriver $shipping_service) => $shipping_service->getDriver() === $shipping_service_data->driver);
+            ->first(fn(APICourierShippingDriver $shipping_service) => $shipping_service->getDriver() === $shipping_service_data->driver);
     }
 
     /**

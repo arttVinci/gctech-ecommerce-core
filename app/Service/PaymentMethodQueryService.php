@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Data\PaymentData;
 use App\Data\SalesPaymentData;
 use App\Data\SalesOrderData;
+use App\Driver\Payment\MootaPaymentDriver;
 use Spatie\LaravelData\DataCollection;
 use App\Contract\PaymentDriverInterface;
 use App\Driver\Payment\OfflinePaymentDriver;
@@ -17,7 +18,10 @@ class PaymentMethodQueryService
 
     public function __construct()
     {
-        $this->driver = [new OfflinePaymentDriver()];
+        $this->driver = [
+            new OfflinePaymentDriver(),
+            new MootaPaymentDriver()
+        ];
     }
 
     public function getDriver(PaymentData|SalesPaymentData $paymentData): PaymentDriverInterface

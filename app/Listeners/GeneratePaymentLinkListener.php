@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\SalesOrderCreated;
+use App\Events\SalesOrderCreatedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Service\PaymentMethodQueryService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,7 +20,7 @@ class GeneratePaymentLinkListener
     /**
      * Handle the event.
      */
-    public function handle(SalesOrderCreated $event): void
+    public function handle(SalesOrderCreatedEvent $event): void
     {
         app(PaymentMethodQueryService::class)
             ->getDriver($event->sales_order->sales_payment)
