@@ -33,7 +33,7 @@ class SalesOrderService
 
     public function updatePaymentPayload(SalesOrderData $sales_order, array $payload): SalesOrderData
     {
-        SalesOrder::where('trx_id', $sales_order)
+        SalesOrder::where('trx_id', $sales_order->rtx_id)
             ->update([
                 'payment_payload' => array_merge($sales_order->sales_payment->payload, $payload)
             ]);

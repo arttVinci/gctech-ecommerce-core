@@ -19,14 +19,13 @@ class PaymentMethodQueryService
     public function __construct()
     {
         $this->driver = [
-            new OfflinePaymentDriver(),
             new MootaPaymentDriver()
         ];
     }
 
     public function getDriver(PaymentData|SalesPaymentData $paymentData): PaymentDriverInterface
     {
-        return collect($this->driver)->first(fn(OfflinePaymentDriver $paymentDriverInterface) => $paymentDriverInterface->driver === $paymentData->driver);
+        return collect($this->driver)->first(fn(MootaPaymentDriver $paymentDriverInterface) => $paymentDriverInterface->driver === $paymentData->driver);
     }
 
     public function getPaymentMethods(): DataCollection

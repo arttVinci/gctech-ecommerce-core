@@ -61,58 +61,58 @@ class APICourierShippingDriver implements ShippingServiceInterface
                 'kurir' => 'J&T Express',
                 'service' => 'Regular',
             ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'jnt-express',
-            //     'kurir' => 'J&T Express',
-            //     'service' => 'Express',
-            // ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'jnt-cargo',
-            //     'kurir' => 'J&T Express',
-            //     'service' => 'Cargo',
-            // ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'jnt-express',
+                'kurir' => 'J&T Express',
+                'service' => 'Express',
+            ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'jnt-cargo',
+                'kurir' => 'J&T Express',
+                'service' => 'Cargo',
+            ],
 
             // // --- Grab ---
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'grab-instant',
-            //     'kurir' => 'Grab',
-            //     'service' => 'Instant',
-            // ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'grab-same-day',
-            //     'kurir' => 'Grab',
-            //     'service' => 'Same Day',
-            // ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'grab-instant',
+                'kurir' => 'Grab',
+                'service' => 'Instant',
+            ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'grab-same-day',
+                'kurir' => 'Grab',
+                'service' => 'Same Day',
+            ],
 
             // // --- SiCepat ---
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'sicepat-reguler',
-            //     'kurir' => 'SiCepat',
-            //     'service' => 'Regular',
-            // ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'sicepat-express',
-            //     'kurir' => 'SiCepat',
-            //     'service' => 'Express',
-            // ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'sicepat-cargo',
-            //     'kurir' => 'SiCepat',
-            //     'service' => 'Cargo',
-            // ],
-            // [
-            //     'driver'  => $this->driver,
-            //     'code'    => 'sicepat-same-day',
-            //     'kurir' => 'SiCepat',
-            //     'service' => 'Same Day',
-            // ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'sicepat-reguler',
+                'kurir' => 'SiCepat',
+                'service' => 'Regular',
+            ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'sicepat-express',
+                'kurir' => 'SiCepat',
+                'service' => 'Express',
+            ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'sicepat-cargo',
+                'kurir' => 'SiCepat',
+                'service' => 'Cargo',
+            ],
+            [
+                'driver'  => $this->driver,
+                'code'    => 'sicepat-same-day',
+                'kurir' => 'SiCepat',
+                'service' => 'Same Day',
+            ],
         ], DataCollection::class);
     }
 
@@ -138,17 +138,13 @@ class APICourierShippingDriver implements ShippingServiceInterface
                     "weight" => $cart->total_weight,
                     "packagePrice" => $cart->total,
                     "origin" => [
-                        "postalCode" => "40115",
-                        "longitude" => 107.6108013,
-                        "latitude" => -6.908591400000001
+                        "postalCode" => $origin->postal_code,
                     ],
                     "destination" => [
-                        "postalCode" => "40115",
-                        "longitude" => 107.6108013,
-                        "latitude" => -6.908591400000001
+                        "postalCode" => $destination->postal_code,
                     ],
-                    "logistics" => ["JNE", "SAP Logistic", "Ninja Xpress", "Lalamove", "Grab"],
-                    "services" => ["Regular", "Express", "Same Day", "Cargo", "Instant"]
+                    "logistics" => [$shipping_service->kurir],
+                    "services" => [$shipping_service->service]
                 ]);
         } catch (ConnectionException $e) {
             Log::error("API Timeout/Connection" . $e->getMessage());
@@ -162,8 +158,6 @@ class APICourierShippingDriver implements ShippingServiceInterface
 
             return null;
         }
-
-        dd($response);
 
         $data = $response->collect('data')->flatten(1)->values()->first();
         if (empty($data)) {

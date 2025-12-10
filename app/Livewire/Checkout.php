@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use Exception;
+use Throwable;
 use App\Data\CartData;
 use Livewire\Component;
 use App\Data\RegionData;
@@ -14,7 +16,9 @@ use App\Rules\ValidShippingHash;
 use App\Service\CheckoutService;
 use App\Events\SalesOrderCreated;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Service\RegionQueryService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 use App\Contract\CartServiceInterface;
 use App\Service\ShippingMethodService;
@@ -183,23 +187,27 @@ class Checkout extends Component
     public function placeAnOrder(CartServiceInterface $cart)
     {
         $validation = $this->validate();
-        $shipping_method = app(ShippingMethodService::class)->getShippingMethod(data_get($validation, 'data.shipping_hash'));
-        $payment_method  = app(PaymentMethodQueryService::class)->getPaymentMethodHash(data_get($validation, 'data.payment_method_hash'));
 
-        $data_checkout = CheckoutData::from([
-            'customer'      =>      CustomerData::from(data_get($validation, 'data')),
-            'address_line'  =>      data_get($validation, 'data.address_line'),
-            'origin'        =>      $shipping_method->origin,
-            'destination'   =>      $shipping_method->destination,
-            'cart'          =>      $this->cart,
-            'shipping'      =>      $shipping_method,
-            'payment'       =>      $payment_method
-        ]);
+        try {
+            $shipping_method = app(ShippingMethodService::class)->getShippingMethod(data_get($validation, 'data.shipping_hash'));
+            $payment_method  = app(PaymentMethodQueryService::class)->getPaymentMethodHash(data_get($validation, 'data.payment_method_hash'));
 
-        $service = app(CheckoutService::class);
-        $sales_order = $service->makeAnOrder($data_checkout);
-        $cart->clear();
+            $data_checkout = CheckoutData::from([
+                'customer'      =>      CustomerData::from(data_get($validation, 'data')),
+                'address_line'  =>      data_get($validation, 'data.address_line'),
+                'origin'        =>      $shipping_method->origin,
+                'destination'   =>      $shipping_method->destination,
+                'cart'          =>      $this->cart,
+                'shipping'      =>      $shipping_method,
+                'payment'       =>      $payment_method
+            ]);
+            $service = app(CheckoutService::class);
+            $sales_order = $service->makeAnOrder($data_checkout);
+            $cart->clear();
 
-        return redirect()->route('order-confirmed', $sales_order->rtx_id);
+            return redirect()->route('order-confirmed', $sales_order->rtx_id);
+        } catch (Exception $e) {
+            Log::error("Error Checkout: " . $e->getMessage());
+        }
     }
 }
