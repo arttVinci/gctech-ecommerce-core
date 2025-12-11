@@ -24,6 +24,7 @@
         "spatie/laravel-model-states": "^2.12",
         "spatie/laravel-tags": "^4.10",
         "spatie/laravel-webhook-client": "^3.4",
+        "spatie/laravel-webhook-server": "^3.8",
         "vinkla/hashids": "^13.0"
     },
     "require-dev": {

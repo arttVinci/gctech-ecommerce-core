@@ -26,3 +26,5 @@ Route::view('/page', 'pages.page')->name('page');
 Route::get('/mailable', function () {
     return new SalesOrderCreatedMail(SalesOrderData::from(SalesOrder::latest()->first()));
 });
+
+Route::webhooks('moota/callback');
