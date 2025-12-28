@@ -3,8 +3,6 @@
 <div class="max-w-2xl mx-auto text-center">
     <h2 class="text-xl font-bold md:text-2xl md:leading-tight dark:text-white">{{ $title }}</h2>
 </div>
-<!-- End Title -->
-<!-- Card Blog -->
 <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 mx-auto">
     <!-- Grid -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

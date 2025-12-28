@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
-use App\Data\ProductCollectionData;
 use App\Models\Tag;
 use App\Models\Product;
 use Livewire\Component;
 use App\Data\ProductData;
 use Livewire\WithPagination;
+use App\Data\ProductCollectionData;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductCatalog extends Component
 {
     use WithPagination;
 
+    public $category = '';
     public $queryString = [
         'select_collections'   =>   ['except' => []],
         'search'               =>   ['except' => []],
-        'sortBy'               =>   ['except' => 'newest']
+        'sortBy'               =>   ['except' => 'newest'],
+        'category'             =>   ['except' => '']
     ];
 
     public array $select_collections = [];
@@ -26,11 +29,16 @@ class ProductCatalog extends Component
     public string $sortBy = 'newest';
     public function render()
     {
-        $collection_result = Tag::query()->withType('collection')->withCount('products')->get();
         $query = Product::query();
 
         if ($this->search) {
             $query->where('name', 'LIKE', "%{$this->search}%");
+        }
+
+        if ($this->category) {
+            $query->whereHas('tags', function (Builder $q) {
+                $q->where('slug->en', $this->category);
+            });
         }
 
         if (!empty($this->select_collections)) {
@@ -53,6 +61,17 @@ class ProductCatalog extends Component
                 break;
         }
 
+        $collectionQuery = Tag::query()->withType('collection');
+
+        if ($this->category) {
+            $collectionQuery->whereHas('products', function ($q) {
+                $q->whereHas('tags', function ($t) {
+                    $t->where('slug->en', $this->category);
+                });
+            });
+        }
+
+        $collection_result = $collectionQuery->withCount('products')->get();
 
         $products = ProductData::collect($query->paginate(9));
         $collections = ProductCollectionData::collect($collection_result);

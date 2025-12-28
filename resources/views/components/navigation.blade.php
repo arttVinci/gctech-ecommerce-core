@@ -32,7 +32,7 @@
     <el-popover-group class="hidden lg:flex lg:gap-x-12 ">
       <a href="{{ route('home') }}" class="text-sm/6 font-semibold text-gray-900">Home</a> 
       <a href="#" class="text-sm/6 font-semibold text-gray-900">Explore</a>
-       <div class="relative">
+      <div class="relative">
         <button popovertarget="desktop-menu-product" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
           Product
           <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400">
@@ -47,10 +47,9 @@
                 <svg class="w-6 h-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"/>
                 </svg>
-
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900 hover:text-indigo-600">
+                <a href="{{ route('product-catalog', ['category' => 'laptop']) }}" class="block font-semibold text-gray-900 hover:text-indigo-600">
                   Laptop
                   <span class="absolute inset-0"></span>
                 </a>
@@ -78,7 +77,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900 hover:text-indigo-600">
+                <a href="{{ route('product-catalog', ['category' => 'iphone']) }}" class="block font-semibold text-gray-900 hover:text-indigo-600">
                   iPhone
                   <span class="absolute inset-0"></span>
                 </a>
