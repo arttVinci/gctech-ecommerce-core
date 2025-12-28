@@ -31,8 +31,8 @@
     </div>
     <el-popover-group class="hidden lg:flex lg:gap-x-12 ">
       <a href="{{ route('home') }}" class="text-sm/6 font-semibold text-gray-900">Home</a> 
-
-      <div class="relative">
+      <a href="#" class="text-sm/6 font-semibold text-gray-900">Explore</a>
+       <div class="relative">
         <button popovertarget="desktop-menu-product" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
           Product
           <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400">
@@ -145,7 +145,6 @@
         </el-popover>
       </div>
 
-      <a href="#" class="text-sm/6 font-semibold text-gray-900">Explore</a>
       <a href="#" class="text-sm/6 font-semibold text-gray-900">Lokasi Toko</a>
       <a href="#" class="text-sm/6 font-semibold text-gray-900">Kontak Kami</a>
     </el-popover-group>

@@ -20,27 +20,27 @@ class HomePage extends Component
             ],
             [
                 'name'          =>      'Monitor PC',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/monitor-kategori.jpg'
             ],
             [
                 'name'          =>      'Handphone',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/handphone-kategori.jpg'
             ],
             [
                 'name'          =>      'iPhone',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/iphone-kategori.jpg'
             ],
             [
                 'name'          =>      'Keyboard',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/keyboard-kategori.jpg'
             ],
             [
                 'name'          =>      'Mouse',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/mouse-kategori.jpg'
             ],
             [
                 'name'          =>      'Smartwatch',
-                'img_url'       =>      'media/laptop-kategori.jpg'
+                'img_url'       =>      'media/smartwatch-kategori.jpg'
             ]
         ];
     }
