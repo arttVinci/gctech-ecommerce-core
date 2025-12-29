@@ -7,6 +7,33 @@ use Illuminate\Support\Str;
 
 class iPhoneData
 {
+    public function getImagePath($name)
+    {
+        $path = '';
+
+        $path = match (true) {
+            Str::contains($name, ['iPhone X', 'iPhone XS']) => 'iphonexs.jpg',
+            Str::contains($name, 'iPhone XR')       => 'iphonexr.jpg',
+            Str::contains($name, 'iPhone 11 Pro')   => 'iphone11pro.jpg',
+            Str::contains($name, 'iPhone 11')       => 'iphone11.jpg',
+            Str::contains($name, 'iPhone 12 Pro')       => 'iphone12.jpg',
+            Str::contains($name, 'iPhone 12')       => 'iphone12.jpg',
+            Str::contains($name, 'iPhone 13 Pro')       => 'iphone13pro.jpg',
+            Str::contains($name, 'iPhone 13')       => 'iphone13.jpg',
+            Str::contains($name, 'iPhone 14 Pro')       => 'iphone14pro.jpg',
+            Str::contains($name, 'iPhone 14')       => 'iphone14.jpg',
+            Str::contains($name, 'iPhone 15 Pro')       => 'iphone15pro.jpg',
+            Str::contains($name, 'iPhone 15')       => 'iphone15.jpg',
+            Str::contains($name, 'iPhone 16 Pro')       => 'iphone16pro.jpg',
+            Str::contains($name, 'iPhone 16')       => 'iphone16.jpg',
+            Str::contains($name, 'iPhone 17')       => 'iphone17.jpg',
+
+            default => 'default.jpg',
+        };
+
+        return storage_path('app/public/media/iphone/' . $path);
+    }
+
     private function productDeskripsi($productName)
     {
         //default
@@ -224,6 +251,8 @@ class iPhoneData
                 'stock'      => rand(20, 70),
                 'created_at' => now(),
                 'updated_at' => now(),
+
+                'local_image_path' => $this->getImagePath($item['name']),
             ];
         }, $data);
     }

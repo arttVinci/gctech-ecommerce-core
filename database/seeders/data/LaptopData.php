@@ -23,11 +23,13 @@ class LaptopData
             $path = Arr::random(['victus1.jpg', 'victus2.jpg', 'victus3.jpg']);
         } elseif (Str::contains($name, ['Nitro'])) {
             $path = Arr::random(['acer1.jpg', 'acer2.jpg', 'acer3.jpg']);
+        } elseif (Str::contains($name, ['MSI'])) {
+            $path = Arr::random(['msi1.jpg', 'msi2.jpg', 'msi3.jpg']);
         } else {
             $path = 'default.jpg';
         }
 
-        return storage_path('app/public/media/laptop' . $path);
+        return storage_path('app/public/media/laptop/' . $path);
     }
     private function productDeskripsi($productName)
     {
@@ -97,7 +99,7 @@ class LaptopData
             MD;
     }
 
-    public function getAll(): array
+    public function data(): array
     {
         $rawProducts = [
             ['name' => 'Advan Pixelwar - Ryzen 5 6600H - RTX 4050 - 16GB/512GB', 'price' => 9699000, 'weight' => 2100],
@@ -211,6 +213,8 @@ class LaptopData
                 'stock'      => rand(5, 50),
                 'created_at' => now(),
                 'updated_at' => now(),
+
+                'local_image_path' => $this->getImagePath($item['name']),
             ];
         }, $rawProducts);
     }
