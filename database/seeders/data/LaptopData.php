@@ -2,10 +2,33 @@
 
 namespace Database\Seeders\Data;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class LaptopData
 {
+    public function getImagePath($name)
+    {
+        $path = '';
+
+        if (Str::contains($name, ['ROG', 'Strix', 'Zephyrus', 'Flow'])) {
+            $path = Arr::random(['asus1.jpg', 'asus2.jpg', 'asus3.jpg']);
+        } elseif (Str::contains($name, ['Advan', 'Soulmate', 'Pixelwar', 'Workplus'])) {
+            $path = Arr::random(['advan1.jpg', 'advan2.jpg', 'advan3.jpg']);
+        } elseif (Str::contains($name, ['Axioo', 'Pongo', 'Hype'])) {
+            $path = Arr::random(['axioo1.jpg', 'axioo2.jpg', 'axioo3.jpg']);
+        } elseif (Str::contains($name, ['LOQ'])) {
+            $path = Arr::random(['lenovo1.jpg', 'lenovo2.jpg', 'lenovo3.jpg', 'lenovo4.jpg', 'lenovo5.jpg']);
+        } elseif (Str::contains($name, ['Victus'])) {
+            $path = Arr::random(['victus1.jpg', 'victus2.jpg', 'victus3.jpg']);
+        } elseif (Str::contains($name, ['Nitro'])) {
+            $path = Arr::random(['acer1.jpg', 'acer2.jpg', 'acer3.jpg']);
+        } else {
+            $path = 'default.jpg';
+        }
+
+        return storage_path('app/public/media/laptop' . $path);
+    }
     private function productDeskripsi($productName)
     {
         $specs = [
