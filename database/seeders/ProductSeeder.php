@@ -16,11 +16,10 @@ class ProductSeeder extends Seeder
             new IphoneData(),
         ];
 
-        foreach ($dataSources as $source) {
-            $readyToInsert = $source->data();
-            foreach (array_chunk($readyToInsert, 500) as $chunk) {
-                DB::table('products')->insert($chunk);
-            }
+        foreach ($dataSources as $data) {
+            $productData = $data->data();
+
+            DB::table('products')->insert($productData);
         }
     }
 }
