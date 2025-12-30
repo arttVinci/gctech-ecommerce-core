@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +31,22 @@ class ProductSeeder extends Seeder
 
                 $product = Product::create($item);
 
-                // dd($imagePath);
+                $tag = match (true) {
+                    Str::contains($item['name'], 'ASUS')  => 'Asus ROG',
+                    Str::contains($item['name'], 'Lenovo')  => 'Lenovo LOQ',
+                    Str::contains($item['name'], 'Advan')  => 'Advan Work',
+                    Str::contains($item['name'], 'Axioo')  => 'Axioo PONGO',
+                    Str::contains($item['name'], 'Acer')  => 'Acer Nitro',
+                    Str::contains($item['name'], 'HP')  => 'HP Victus',
+                    Str::contains($item['name'], 'MSI')  => 'MSI',
+                    default => 'Laptop',
+                };
+
+                if (Str::contains($item['name'], ['ASUS', 'Lenovo', 'Axioo', 'Advan', 'Acer', 'HP', 'MSI'])) {
+                    $product->attachTags([$tag, 'Laptop Gaming']);
+                } elseif (Str::contains($item['name'], 'Apple')) {
+                    $product->attachTags([$tag, 'Iphone']);
+                }
 
                 if ($imagePath && File::exists($imagePath)) {
 
