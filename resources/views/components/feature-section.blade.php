@@ -53,21 +53,6 @@
                             </div>
                         </div>
 
-                        <div class="w-full max-w-sm">
-                            <div class="flex flex-col lg:flex-row border border-gray-300 rounded-md focus-within:border-blue-400 focus-within:ring focus-within:ring-blue-300 focus-within:ring-opacity-40">
-                                <input 
-                                    type="email" 
-                                    placeholder="Masukkan email kamu..." 
-                                    class="flex-1 h-10 px-4 py-2 m-1 text-gray-700 placeholder-gray-400 bg-transparent border-none focus:outline-none focus:placeholder-transparent focus:ring-0"
-                                />
-                                <button 
-                                    type="button" 
-                                    class="h-10 px-4 py-2 m-1 text-white bg-blue-500 rounded-md hover:bg-blue-400 transition-colors duration-300"
-                                >
-                                    Gabung
-                                </button>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="w-full lg:w-1/2">

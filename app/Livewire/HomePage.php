@@ -32,11 +32,11 @@ class HomePage extends Component
     public function render()
     {
         $feature_products = ProductData::collect(
-            Product::query()->inRandomOrder()->limit(3)->get()
+            Product::query()->inRandomOrder()->limit(4)->get()
         );
 
         $latest_products = ProductData::collect(
-            Product::query()->latest()->limit(3)->get()
+            Product::query()->latest()->limit(4)->get()
         );
 
         $product_kategori = $this->product_kategori;
