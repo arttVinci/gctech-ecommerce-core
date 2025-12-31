@@ -13,14 +13,11 @@
                                     <path d="M5 12h14"></path>
                                 </svg>
                             </button>
-                            <!-- Input jumlah -->
                             <input
                                 class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none dark:text-white"
                                 style="-moz-appearance: textfield;" type="number" x-model.number="quantity"
                                 @input="if(quantity < 0) quantity = 0" min="0">
 
-
-                            <!-- Tombol tambah -->
                             <button type="button"
                                 class="inline-flex items-center justify-center text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-md cursor-pointer size-6 gap-x-2 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                                 @click="quantity++">

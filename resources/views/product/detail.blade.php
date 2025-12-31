@@ -37,57 +37,18 @@
       </div>
     </div>
     
-
-    <!-- Product Info -->
     <div class="space-y-6 rounded-lg border border-gray-300 bg-gray-100 p-6 shadow-sm">
       <h2 class="text-lg font-semibold leading-tight text-gray-900 hover:underline">
         {{ $product->name }}
       </h2>
-      
-      <div class="flex items-center gap-2">
-        <span class="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded">
-          the last 2 products
-        </span>
-        <div class="flex items-center text-yellow-400">
-          ★★★★★
-        </div>
-        <a href="#" class="text-sm underline hover:text-blue-400">345 Reviews</a>
-      </div>
+    
 
       <div class="flex justify-between">
         <p class="text-2xl font-semibold leading-tight text-gray-900">{{ $product->price_formated }}</p>
       </div>
 
-      <!-- Buttons -->
        <livewire:add-to-cart :product="$product"/>
 
-      <!-- Variants -->
-      <div class="space-y-4">
-        <div>
-          
-<h4 class="font-semibold mb-2">Color</h4>
-<ul class="w-full flex-wrap gap-3 flex">
-    <li>
-        <input type="radio" id="hs-horizontal-list-group-item-radio-1" name="hs-horizontal-list-group-item-radio" class="hidden peer" required />
-        <label for="hs-horizontal-list-group-item-radio-1" class="inline-flex items-center justify-between w-full py-1 px-4 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 dark:peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
-                <span class="">Blue</span>
-        </label>
-    </li>
-    <li>
-        <input type="radio" id="hs-horizontal-list-group-item-radio-2" name="hs-horizontal-list-group-item-radio" class="hidden peer" required />
-        <label for="hs-horizontal-list-group-item-radio-2" class="inline-flex items-center justify-between w-full py-1 px-4 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 dark:peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
-                <span class="">White</span>
-        </label>
-    </li>
-    <li>
-        <input type="radio" id="hs-horizontal-list-group-item-radio-3" name="hs-horizontal-list-group-item-radio" class="hidden peer" required />
-        <label for="hs-horizontal-list-group-item-radio-3" class="inline-flex items-center justify-between w-full py-1 px-4 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 dark:peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
-                <span class="">Black</span>
-        </label>
-    </li>
-</ul>
-        </div>
-      </div>
     </div>
   </div>
 </div>
