@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use Database\Seeders\Data\SmartwatchData;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,8 @@ class ProductSeeder extends Seeder
     {
         $dataSources = [
             new IphoneData(),
-            new LaptopData()
+            new LaptopData(),
+            new SmartwatchData()
         ];
 
         foreach ($dataSources as $data) {
@@ -39,13 +41,15 @@ class ProductSeeder extends Seeder
                     Str::contains($item['name'], 'Acer')  => 'Acer Nitro',
                     Str::contains($item['name'], 'HP')  => 'HP Victus',
                     Str::contains($item['name'], 'MSI')  => 'MSI',
-                    default => 'Laptop',
+                    default => 'Laptop Gaming'
                 };
 
                 if (Str::contains($item['name'], ['ASUS', 'Lenovo', 'Axioo', 'Advan', 'Acer', 'HP', 'MSI'])) {
-                    $product->attachTags([$tag, 'Laptop Gaming']);
-                } elseif (Str::contains($item['name'], 'Apple')) {
-                    $product->attachTags([$tag, 'Iphone']);
+                    $product->attachTags([$tag, 'Laptop'], 'collection');
+                } elseif (Str::contains($item['name'], ['Apple', 'Iphone'])) {
+                    $product->attachTags(['Iphone'], 'collection');
+                } elseif (Str::contains($item['name'], ['Watch', 'Smart'])) {
+                    $product->attachTags(['SmartWatch'], 'collection');
                 }
 
                 if ($imagePath && File::exists($imagePath)) {

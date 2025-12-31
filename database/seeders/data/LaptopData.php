@@ -4,6 +4,7 @@ namespace Database\Seeders\Data;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Filament\Support\Markdown;
 
 class LaptopData
 {
@@ -31,7 +32,7 @@ class LaptopData
 
         return storage_path('app/public/media/laptop/' . $path);
     }
-    private function productDeskripsi($productName)
+    private function productDeskripsi($productName): string
     {
         $specs = [
             'processor' => 'Intel Core i5-12450H / AMD Ryzen 5 7535HS',
