@@ -9,9 +9,9 @@
         </p>
 
        
-             <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-16 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-7">
+        <div class="flex flex-wrap justify-center gap-8 mt-8 xl:mt-16">
            @foreach ($product_kategori as $kategori )
-            <div class="flex flex-col items-center p-3 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent shadow-sm group hover:bg-blue-100 border-gray-300 dark:hover:border-transparent">
+            <div class="flex flex-col items-center p-4 w-40 h-40 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent shadow-sm group hover:bg-blue-100 border-gray-300 dark:hover:border-transparent">
                 <img class="object-cover w-24 h-24 rounded-full ring-4 ring-gray-300" src="{{ $kategori['img_url'] }}" alt="">
 
                 <h1 class="mt-4 text-lg font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">{{ $kategori['name'] }}</h1>
